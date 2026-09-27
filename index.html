@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سبزینه | فروشگاه محصولات ارگانیک</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Tahoma, Arial, sans-serif;
+    }
+
+    body {
+      background: #f7f8f4;
+      color: #26352a;
+    }
+
+    header {
+      background: #285c3a;
+      color: white;
+      padding: 18px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+    }
+
+    .hero {
+      min-height: 430px;
+      padding: 80px 8%;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #e8f2df, #ffffff);
+    }
+
+    .hero-text {
+      max-width: 600px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      color: #285c3a;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 19px;
+      line-height: 2;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #285c3a;
+      color: white;
+      padding: 13px 25px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .products {
+      padding: 55px 7%;
+    }
+
+    .products h2 {
+      text-align: center;
+      margin-bottom: 35px;
+      color: #285c3a;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 9px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .price {
+      color: #285c3a;
+      font-weight: bold;
+      margin: 12px;
+    }
+
+    footer {
+      background: #285c3a;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🌿 سبزینه</div>
+
+  <nav>
+    <a href="#">خانه</a>
+    <a href="#products">محصولات</a>
+    <a href="#contact">تماس با ما</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>فروشگاه سبزینه</h1>
+
+    <p>
+      محصولات طبیعی و ارگانیک را با کیفیت بالا و بسته‌بندی مناسب
+      از سبزینه تهیه کنید.
+    </p>
+
+    <a href="#products" class="btn">مشاهده محصولات</a>
+  </div>
+</section>
+
+<section class="products" id="products">
+
+  <h2>محصولات ما</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <img src="salehbabaei2829-jpg" alt="محصول ارگانیک">
+      <h3>محصول ارگانیک</h3>
+      <p>کیفیت طبیعی و تازه</p>
+      <div class="price">قیمت: تماس بگیرید</div>
+      <a class="btn" href="#">خرید</a>
+    </div>
+
+    <div class="card">
+      <img src="salehbabaei2829-jpg" alt="محصول طبیعی">
+      <h3>محصول طبیعی</h3>
+      <p>انتخابی سالم برای شما</p>
+      <div class="price">قیمت: تماس بگیرید</div>
+      <a class="btn" href="#">خرید</a>
+    </div>
+
+    <div class="card">
+      <img src="salehbabaei2829-jpg" alt="محصول سبزینه">
+      <h3>محصول سبزینه</h3>
+      <p>طبیعی و باکیفیت</p>
+      <div class="price">قیمت: تماس بگیرید</div>
+      <a class="btn" href="#">خرید</a>
+    </div>
+
+  </div>
+</section>
+
+<footer id="contact">
+  <p>سبزینه | فروشگاه محصولات ارگانیک</p>
+  <p>برای سفارش و اطلاعات بیشتر با ما تماس بگیرید.</p>
+</footer>
+
+</body>
+  </html>
