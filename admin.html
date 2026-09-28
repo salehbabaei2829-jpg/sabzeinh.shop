@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>پنل مدیریت | سبزینه</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Tahoma,Arial}
+body{background:#f3f5f4;color:#222}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer;border:0}
+.header{
+background:#198754;color:white;padding:18px;text-align:center;
+position:sticky;top:0;z-index:10
+}
+.container{max-width:1100px;margin:auto;padding:18px}
+.card{
+background:#fff;border-radius:15px;padding:20px;margin-bottom:18px;
+box-shadow:0 3px 15px #00000012
+}
+.login{
+max-width:450px;margin:60px auto
+}
+h1{font-size:23px}
+h2{color:#198754;margin-bottom:18px}
+label{display:block;margin:10px 0 6px;font-weight:bold}
+input,select,textarea{
+width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;
+font-size:15px;background:white
+}
+textarea{min-height:90px;resize:vertical}
+.btn{
+padding:11px 17px;border-radius:9px;margin:4px;color:white
+}
+.green{background:#198754}
+.red{background:#dc3545}
+.blue{background:#0d6efd}
+.gray{background:#6c757d}
+.orange{background:#fd7e14}
+.tabs{
+display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px
+}
+.tab{
+padding:13px;border-radius:9px;background:#e9ecef;text-align:center;
+font-weight:bold
+}
+.tab.active{background:#198754;color:white}
+.section{display:none}
+.section.active{display:block}
+.grid{
+display:grid;grid-template-columns:repeat(2,1fr);gap:15px
+}
+.product{
+border:1px solid #ddd;border-radius:12px;padding:14px
+}
+.product img{
+width:100%;height:160px;object-fit:cover;border-radius:9px;
+background:#eee
+}
+.product h3{margin:10px 0}
+.price{color:#198754;font-weight:bold;font-size:18px}
+.badge{
+display:inline-block;padding:5px 9px;border-radius:20px;
+background:#e8f5ee;color:#198754;font-size:12px
+}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{
+padding:11px;border-bottom:1px solid #eee;text-align:right;
+white-space:nowrap
+}
+th{background:#f1f3f5}
+.message{
+padding:12px;border-radius:8px;margin-top:12px;display:none
+}
+.success{background:#d1e7dd;color:#0f5132}
+.error{background:#f8d7da;color:#842029}
+.stat-grid{
+display:grid;grid-template-columns:repeat(3,1fr);gap:12px
+}
+.stat{
+padding:20px;border-radius:12px;background:#f8f9fa;text-align:center
+}
+.stat strong{display:block;font-size:25px;color:#198754;margin-top:8px}
+.hidden{display:none!important}
+
+@media(max-width:700px){
+.grid{grid-template-columns:1fr}
+.tabs{grid-template-columns:repeat(2,1fr)}
+.stat-grid{grid-template-columns:1fr}
+.container{padding:10px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🛒 پنل مدیریت فروشگاه سبزینه</h1>
+</header>
+
+<div class="container">
+
+<!-- LOGIN -->
+<div id="loginPage" class="card login">
+
+<h2>🔐 ورود مدیر</h2>
+
+<label>رمز عبور</label>
+<input id="loginPassword" type="password"
+placeholder="رمز عبور مدیر">
+
+<button class="btn green" style="width:100%;margin-top:12px"
+onclick="login()">
+ورود به پنل
+</button>
+
+<div id="loginMsg" class="message"></div>
+
+</div>
+
+
+<!-- ADMIN -->
+<div id="adminPage" class="hidden">
+
+<div class="tabs">
+
+<button class="tab active" onclick="showSection('dashboard',this)">
+📊 داشبورد
+</button>
+
+<button class="tab" onclick="showSection('products',this)">
+📦 محصولات
+</button>
+
+<button class="tab" onclick="showSection('orders',this)">
+🛒 سفارش‌ها
+</button>
+
+<button class="tab" onclick="showSection('settings',this)">
+⚙️ تنظیمات
+</button>
+
+</div>
+
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="section active">
+
+<div class="card">
+<h2>📊 داشبورد</h2>
+
+<div class="stat-grid">
+
+<div class="stat">
+تعداد محصولات
+<strong id="statProducts">0</strong>
+</div>
+
+<div class="stat">
+موجودی کالاها
+<strong id="statStock">0</strong>
+</div>
+
+<div class="stat">
+سفارش‌ها
+<strong id="statOrders">0</strong>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- PRODUCTS -->
+<section id="products" class="section">
+
+<div class="card">
+
+<h2>➕ افزودن محصول</h2>
+
+<label>نام محصول</label>
+<input id="productName" placeholder="مثلاً عسل طبیعی">
+
+<label>قیمت (تومان)</label>
+<input id="productPrice" type="number" placeholder="250000">
+
+<label>موجودی</label>
+<input id="productStock" type="number" placeholder="10">
+
+<label>دسته‌بندی</label>
+<select id="productCategory">
+<option>محصولات ارگانیک</option>
+<option>عسل</option>
+<option>خشکبار</option>
+<option>ادویه</option>
+<option>حبوبات</option>
+<option>سایر</option>
+</select>
+
+<label>آدرس تصویر محصول</label>
+<input id="productImage"
+placeholder="https://example.com/image.jpg">
+
+<label>توضیحات</label>
+<textarea id="productDescription"
+placeholder="توضیحات محصول..."></textarea>
+
+<button class="btn green" onclick="addProduct()">
+➕ افزودن محصول
+</button>
+
+<div id="productMsg" class="message"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📦 محصولات فروشگاه</h2>
+
+<input id="searchProduct"
+placeholder="🔎 جستجوی محصول..."
+oninput="renderProducts()">
+
+<br><br>
+
+<div id="productsList" class="grid"></div>
+
+</div>
+
+</section>
+
+
+<!-- ORDERS -->
+<section id="orders" class="section">
+
+<div class="card">
+
+<h2>🛒 سفارش‌ها</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>شماره</th>
+<th>مشتری</th>
+<th>مبلغ</th>
+<th>وضعیت</th>
+<th>عملیات</th>
+</tr>
+</thead>
+
+<tbody id="ordersList"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+<section id="settings" class="section">
+
+<div class="card">
+
+<h2>🔑 تغییر رمز عبور</h2>
+
+<label>رمز فعلی</label>
+<input id="oldPassword" type="password">
+
+<label>رمز جدید</label>
+<input id="newPassword" type="password">
+
+<label>تکرار رمز جدید</label>
+<input id="confirmPassword" type="password">
+
+<button class="btn green" onclick="changePassword()">
+💾 ذخیره رمز جدید
+</button>
+
+<div id="passwordMsg" class="message"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🏪 اطلاعات فروشگاه</h2>
+
+<label>نام فروشگاه</label>
+<input id="shopName" value="فروشگاه سبزینه">
+
+<label>شماره تماس</label>
+<input id="shopPhone" placeholder="شماره تماس فروشگاه">
+
+<button class="btn blue" onclick="saveSettings()">
+💾 ذخیره تنظیمات
+</button>
+
+<div id="settingsMsg" class="message"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🚪 خروج</h2>
+
+<button class="btn red" onclick="logout()">
+خروج از پنل مدیریت
+</button>
+
+</div>
+
+</section>
+
+</div>
+</div>
+
+
+<script>
+
+/* =========================
+   تنظیمات اولیه
+========================= */
+
+const PASSWORD_KEY = "sabzeinh_admin_password";
+const PRODUCTS_KEY = "sabzeinh_products";
+const ORDERS_KEY = "sabzeinh_orders";
+const SETTINGS_KEY = "sabzeinh_settings";
+
+
+/*
+رمز اولیه:
+در اولین اجرای سایت، مقدار زیر رمز اولیه است.
+بعد از ورود می‌توانی از قسمت تنظیمات آن را تغییر بدهی.
+*/
+
+if(!localStorage.getItem(PASSWORD_KEY)){
+    localStorage.setItem(
+        PASSWORD_KEY,
+        "12345678"
+    );
+}
+
+
+/* =========================
+   محصولات اولیه
+========================= */
+
+if(!localStorage.getItem(PRODUCTS_KEY)){
+
+    const products = [
+        {
+            id:1,
+            name:"عسل طبیعی",
+            price:250000,
+            stock:20,
+            category:"عسل",
+            image:"",
+            description:"عسل طبیعی و باکیفیت"
+        },
+        {
+            id:2,
+            name:"بادام",
+            price:320000,
+            stock:15,
+            category:"خشکبار",
+            image:"",
+            description:"بادام تازه و مرغوب"
+        }
+    ];
+
+    localStorage.setItem(
+        PRODUCTS_KEY,
+        JSON.stringify(products)
+    );
+}
+
+
+/* =========================
+   سفارش‌های نمونه
+========================= */
+
+if(!localStorage.getItem(ORDERS_KEY)){
+
+    const orders = [
+        {
+            id:1001,
+            customer:"مشتری نمونه",
+            total:570000,
+            status:"در انتظار"
+        }
+    ];
+
+    localStorage.setItem(
+        ORDERS_KEY,
+        JSON.stringify(orders)
+    );
+}
+
+
+/* =========================
+   ورود
+========================= */
+
+function login(){
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    const savedPassword =
+        localStorage.getItem(PASSWORD_KEY);
+
+    if(password === savedPassword){
+
+        document.getElementById("loginPage")
+            .classList.add("hidden");
+
+        document.getElementById("adminPage")
+            .classList.remove("hidden");
+
+        loadAll();
+
+    }else{
+
+        showMessage(
+            "loginMsg",
+            "❌ رمز عبور اشتباه است.",
+            false
+        );
+    }
+}
+
+
+/* =========================
+   خروج
+========================= */
+
+function logout(){
+
+    document.getElementById("adminPage")
+        .classList.add("hidden");
+
+    document.getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document.getElementById("loginPassword").value="";
+}
+
+
+/* =========================
+   تب‌ها
+========================= */
+
+function showSection(id,button){
+
+    document.querySelectorAll(".section")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.querySelectorAll(".tab")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    button.classList.add("active");
+
+    loadAll();
+}
+
+
+/* =========================
+   افزودن محصول
+========================= */
+
+function addProduct(){
+
+    const name =
+        document.getElementById("productName").value.trim();
+
+    const price =
+        Number(document.getElementById("productPrice").value);
+
+    const stock =
+        Number(document.getElementById("productStock").value);
+
+    const category =
+        document.getElementById("productCategory").value;
+
+    const image =
+        document.getElementById("productImage").value.trim();
+
+    const description =
+        document.getElementById("productDescription").value.trim();
+
+
+    if(!name || !price){
+
+        showMessage(
+            "productMsg",
+            "❌ نام و قیمت محصول را وارد کن.",
+            false
+        );
+
+        return;
+    }
+
+
+    let products =
+        JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+
+    products.push({
+
+        id:Date.now(),
+
+        name:name,
+
+        price:price,
+
+        stock:stock,
+
+        category:category,
+
+        image:image,
+
+        description:description
+
+    });
+
+
+    localStorage.setItem(
+        PRODUCTS_KEY,
+        JSON.stringify(products)
+    );
+
+
+    document.getElementById("productName").value="";
+    document.getElementById("productPrice").value="";
+    document.getElementById("productStock").value="";
+    document.getElementById("productImage").value="";
+    document.getElementById("productDescription").value="";
+
+
+    showMessage(
+        "productMsg",
+        "✅ محصول با موفقیت اضافه شد.",
+        true
+    );
+
+
+    renderProducts();
+    updateDashboard();
+}
+
+
+/* =========================
+   نمایش محصولات
+========================= */
+
+function renderProducts(){
+
+    const list =
+        document.getElementById("productsList");
+
+    const search =
+        document.getElementById("searchProduct")
+        .value.toLowerCase();
+
+
+    let products =
+        JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+
+    products =
+        products.filter(p =>
+            p.name.toLowerCase().includes(search)
+        );
+
+
+    if(products.length === 0){
+
+        list.innerHTML =
+            "<p>محصولی پیدا نشد.</p>";
+
+        return;
+    }
+
+
+    list.innerHTML = products.map(p=>`
+
+        <div class="product">
+
+            ${
+                p.image
+                ?
+                `<img src="${escapeHTML(p.image)}"
+                onerror="this.style.display='none'">`
+                :
+                `<div style="height:160px;
+                background:#eee;border-radius:9px;
+                display:flex;align-items:center;
+                justify-content:center;font-size:50px">
+                📦
+                </div>`
+            }
+
+            <h3>${escapeHTML(p.name)}</h3>
+
+            <span class="badge">
+                ${escapeHTML(p.category)}
+            </span>
+
+            <p style="margin-top:10px">
+                ${escapeHTML(p.description || "")}
+            </p>
+
+            <p class="price">
+                ${formatPrice(p.price)} تومان
+            </p>
+
+            <p>
+                موجودی:
+                <b>${p.stock}</b>
+            </p>
+
+            <button class="btn blue"
+                onclick="editProduct(${p.id})">
+                ✏️ ویرایش
+            </button>
+
+            <button class="btn red"
+                onclick="deleteProduct(${p.id})">
+                🗑️ حذف
+            </button>
+
+        </div>
+
+    `).join("");
+}
+
+
+/* =========================
+   حذف محصول
+========================= */
+
+function deleteProduct(id){
+
+    if(!confirm("آیا از حذف این محصول مطمئنی؟"))
+        return;
+
+
+    let products =
+        JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+
+    products =
+        products.filter(p=>p.id !== id);
+
+
+    localStorage.setItem(
+        PRODUCTS_KEY,
+        JSON.stringify(products)
+    );
+
+
+    renderProducts();
+    updateDashboard();
+}
+
+
+/* =========================
+   ویرایش محصول
+========================= */
+
+function editProduct(id){
+
+    let products =
+        JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+
+    const product =
+        products.find(p=>p.id === id);
+
+
+    if(!product) return;
+
+
+    const name =
+        prompt("نام محصول:",product.name);
+
+    if(name === null) return;
+
+
+    const price =
+        prompt("قیمت:",product.price);
+
+    if(price === null) return;
+
+
+    const stock =
+        prompt("موجودی:",product.stock);
+
+    if(stock === null) return;
+
+
+    product.name = name;
+    product.price = Number(price);
+    product.stock = Number(stock);
+
+
+    localStorage.setItem(
+        PRODUCTS_KEY,
+        JSON.stringify(products)
+    );
+
+
+    renderProducts();
+    updateDashboard();
+
+    alert("✅ محصول ویرایش شد.");
+}
+
+
+/* =========================
+   سفارش‌ها
+========================= */
+
+function renderOrders(){
+
+    const list =
+        document.getElementById("ordersList");
+
+    const orders =
+        JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+
+    if(!orders.length){
+
+        list.innerHTML =
+            "<tr><td colspan='5'>سفارشی وجود ندارد.</td></tr>";
+
+        return;
+    }
+
+
+    list.innerHTML = orders.map(o=>`
+
+        <tr>
+
+            <td>#${o.id}</td>
+
+            <td>${escapeHTML(o.customer)}</td>
+
+            <td>${formatPrice(o.total)} تومان</td>
+
+            <td>
+                <select
+                onchange="changeOrderStatus(${o.id},this.value)">
+
+                    <option
+                    ${o.status==="در انتظار"?"selected":""}>
+                    در انتظار
+                    </option>
+
+                    <option
+                    ${o.status==="در حال پردازش"?"selected":""}>
+                    در حال پردازش
+                    </option>
+
+                    <option
+                    ${o.status==="ارسال شد"?"selected":""}>
+                    ارسال شد
+                    </option>
+
+                    <option
+                    ${o.status==="تحویل شد"?"selected":""}>
+                    تحویل شد
+                    </option>
+
+                </select>
+            </td>
+
+            <td>
+                <button class="btn red"
+                onclick="deleteOrder(${o.id})">
+                حذف
+                </button>
+            </td>
+
+        </tr>
+
+    `).join("");
+}
+
+
+/* =========================
+   تغییر وضعیت سفارش
+========================= */
+
+function changeOrderStatus(id,status){
+
+    let orders =
+        JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+
+    const order =
+        orders.find(o=>o.id === id);
+
+
+    if(order){
+        order.status=status;
+    }
+
+
+    localStorage.setItem(
+        ORDERS_KEY,
+        JSON.stringify(orders)
+    );
+}
+
+
+/* =========================
+   حذف سفارش
+========================= */
+
+function deleteOrder(id){
+
+    if(!confirm("سفارش حذف شود؟"))
+        return;
+
+
+    let orders =
+        JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+
+    orders =
+        orders.filter(o=>o.id !== id);
+
+
+    localStorage.setItem(
+        ORDERS_KEY,
+        JSON.stringify(orders)
+    );
+
+
+    renderOrders();
+    updateDashboard();
+}
+
+
+/* =========================
+   تغییر رمز
+========================= */
+
+function changePassword(){
+
+    const oldPassword =
+        document.getElementById("oldPassword").value;
+
+    const newPassword =
+        document.getElementById("newPassword").value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+
+    const savedPassword =
+        localStorage.getItem(PASSWORD_KEY);
+
+
+    if(oldPassword !== savedPassword){
+
+        showMessage(
+            "passwordMsg",
+            "❌ رمز فعلی اشتباه است.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(newPassword.length < 8){
+
+        showMessage(
+            "passwordMsg",
+            "❌ رمز جدید باید حداقل ۸ کاراکتر باشد.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(newPassword !== confirmPassword){
+
+        showMessage(
+            "passwordMsg",
+            "❌ تکرار رمز صحیح نیست.",
+            false
+        );
+
+        return;
+    }
+
+
+    localStorage.setItem(
+        PASSWORD_KEY,
+        newPassword
+    );
+
+
+    document.getElementById("oldPassword").value="";
+    document.getElementById("newPassword").value="";
+    document.getElementById("confirmPassword").value="";
+
+
+    showMessage(
+        "passwordMsg",
+        "✅ رمز عبور با موفقیت تغییر کرد.",
+        true
+    );
+}
+
+
+/* =========================
+   تنظیمات فروشگاه
+========================= */
+
+function saveSettings(){
+
+    const settings = {
+
+        name:
+        document.getElementById("shopName").value,
+
+        phone:
+        document.getElementById("shopPhone").value
+
+    };
+
+
+    localStorage.setItem(
+        SETTINGS_KEY,
+        JSON.stringify(settings)
+    );
+
+
+    showMessage(
+        "settingsMsg",
+        "✅ تنظیمات ذخیره شد.",
+        true
+    );
+}
+
+
+function loadSettings(){
+
+    const settings =
+        JSON.parse(localStorage.getItem(SETTINGS_KEY));
+
+
+    if(!settings) return;
+
+
+    document.getElementById("shopName").value =
+        settings.name || "فروشگاه سبزینه";
+
+    document.getElementById("shopPhone").value =
+        settings.phone || "";
+}
+
+
+/* =========================
+   داشبورد
+========================= */
+
+function updateDashboard(){
+
+    const products =
+        JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+    const orders =
+        JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+
+    const stock =
+        products.reduce(
+            (sum,p)=>sum + Number(p.stock || 0),
+            0
+        );
+
+
+    document.getElementById("statProducts")
+        .textContent = products.length;
+
+    document.getElementById("statStock")
+        .textContent = stock;
+
+    document.getElementById("statOrders")
+        .textContent = orders.length;
+}
+
+
+/* =========================
+   بارگذاری
+========================= */
+
+function loadAll(){
+
+    renderProducts();
+    renderOrders();
+    updateDashboard();
+    loadSettings();
+}
+
+
+/* =========================
+   پیام
+========================= */
+
+function showMessage(id,text,success){
+
+    const box =
+        document.getElementById(id);
+
+    box.textContent=text;
+
+    box.className =
+        success
+        ? "message success"
+        : "message error";
+
+    box.style.display="block";
+
+
+    setTimeout(()=>{
+        box.style.display="none";
+    },4000);
+}
+
+
+/* =========================
+   قیمت
+========================= */
+
+function formatPrice(number){
+
+    return Number(number || 0)
+        .toLocaleString("fa-IR");
+}
+
+
+/* =========================
+   امنیت نمایش متن
+========================= */
+
+function escapeHTML(text){
+
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+</script>
+
+</body>
+</html>
